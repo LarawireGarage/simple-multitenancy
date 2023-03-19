@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'enable' => true,
     /**
      * Column name for the created by column
      */

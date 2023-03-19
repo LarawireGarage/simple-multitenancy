@@ -5,15 +5,12 @@ namespace LarawireGarage\SimpleMultitenancy\Traits;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Handle multitenancy with eloquent events
+ * @property bool $userBy Indicates if the model should be mutitenanced.
+ */
 trait HasUserBy
 {
-    /**
-     * Indicates if the model should be mutitenanced.
-     *
-     * @var bool
-     */
-    public $userBy = true;
-
     // **** relationships with User model
     public function createdBy()
     {
@@ -88,7 +85,7 @@ trait HasUserBy
      */
     public function updateUserBy($model)
     {
-        if (!$this->userBy) return;
+        if (!$this->usesUserBy()) return;
         $model->addUserByAttributes($model);
         $userid = $model->freshUserBy();
 
@@ -112,14 +109,13 @@ trait HasUserBy
     public function updateDeletedBy($model)
     {
         /** @var Model $model */
-        if (!$this->userBy) return;
+        if (!$this->usesUserBy()) return;
         $model->addDeletedByAttributes($model);
         $userid = $model->freshUserBy();
 
         $deletedByColumn = $model->getDeletedByColumn();
         if (!is_null($deletedByColumn) && !$model->isDirty($deletedByColumn) && !empty($userid)) {
             $model->setDeletedBy($userid);
-            // dd($model->getAttributes());
         }
     }
     /**
@@ -210,7 +206,7 @@ trait HasUserBy
      */
     public function usesUserBy()
     {
-        return $this->userBy;
+        return isset($this->userBy) ? $this->userBy : config('simple-mutitenancy.enable', true);
     }
 
     /**
