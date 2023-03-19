@@ -4,5 +4,5 @@
 
 **Installation**
 ```
-composer require laravel-garage/simple-multitenancy
+composer require larawire-garage/simple-multitenancy
 ```
