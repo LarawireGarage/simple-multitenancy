@@ -12,3 +12,6 @@ composer require larawire-garage/simple-multitenancy
 ```
 php artisan vendor:publish --tag=simple-mutitenancy-configs
 ```
+
+
+!!! Enjoy !!!
